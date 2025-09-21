@@ -2,10 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { fetchCoinData } from "../../services/fecthCoinData";
 import { useQuery } from 'react-query';
 import { CurrencyContext } from "../../Context/CurrencyContext";
+import currencyStore from '../../state/store'
+import { useNavigate } from 'react-router-dom';
+import PageLoader from '../../components/PageLoader/PageLoader'
 
 function CoinTable(){
+    const navigate = useNavigate(); 
    const [page, setPage] = useState(1);
-   const { currency }  = useContext(CurrencyContext);
+   const { currency }  = currencyStore() ;
 
     const { data, isLoading, isError, error }   = useQuery(['coins', page, currency],() => fetchCoinData(page, currency), {
     // retry: 2,
@@ -13,11 +17,19 @@ function CoinTable(){
     //cacheTime: 1000 * 60 * 2,
    });
    
-
+function handleCoinRedirect(id){
+ 
+    navigate(`/details/${id}`);
+ 
+}
 
    
    if(isError){
     return <div>Error:{error.message} </div>
+   }
+
+   if(isLoading){
+    return <PageLoader />
    }
    
     
@@ -29,51 +41,51 @@ function CoinTable(){
         <div className=" my-5 flex flex-col items-center justify-center gap-5 w-[80vw] mx-auto ">
             <div className=" w-full bg-yellow-400 text-black flex py-4 px-2 font-semibold items-center justify-around ">
                 {/* Header of the table */}
-                <div className=" basic-[35%] " >
+                <div className=" basic-[35%] md:text-3xl text[10px] " >
                     Coin
                 </div>
-                <div className=" basic-[25%] " >
+                <div className=" basic-[25%] md:text-3xl text[10px] " >
                     Price
                 </div>
-                <div className=" basic-[20%] " >
+                <div className=" basic-[20%] md:text-3xl text[10px] " >
                     24h change
                 </div>
-                <div className=" basic-[20%] " >
+                <div className=" basic-[20%] md:text-3xl text[10px] " >
                     Market Cap
                 </div>
 
             </div>
 
-            <div className="flex flex-col w-[80vw] mx-auto ">
+            <div className="flex  flex-col w-[80vw] mx-auto ">
                 {isLoading && <div className="flex justify-center items-center">Loading...</div>}
                 {
                 data && data.data?.map((coin) => {
                     return(
-                        <div key={coin.id} className="w-full bg-transparent text-white flex py-4 px-2 font-semibold items-center justify-between " >
+                        <div onClick={()=> handleCoinRedirect(coin.id)} key={coin.id} className="w-full bg-transparent text-white flex py-4 px-2 font-semibold items-center justify-around cursor-pointer " >
                             <div className="flex items-center justify-start gap-3 basis-[35%]">
-                                <div className="w-[5rem] h-[5rem] ">
-                                    <img src={coin.image} alt="preview" className="w-full h-full"  />
+                                <div className="md:w-[5rem] w-[24px] md:h-[5rem] h-[24px] ">
+                                    <img src={coin.image} alt="preview" className="w-full h-full " loading="lazy"  />
                                 </div>
                                 <div className="flex flex-col">
-                                    <div className="text-3xl">
+                                    <div className="md:text-3xl text-[10px]">
                                     {coin.name}
                                 </div>
-                                <div>
+                                <div className="md:text-xl text-[10px]">
                                     {coin.symbol}
                                 </div>
                                 </div>
 
                             </div>
 
-                            <div className="basis-[35%] flex flex-col ">
-                            {coin.price_change_24h}
+                            <div className="basis-[35%] flex flex-col md:text-2xl text-[10px] ">
+                            {coin.current_price}
 
                             </div>
 
-                            <div className="basis-[20%]">
+                            <div className="basis-[20%] md:text-2xl text-[10px]">
                               {coin.high_24h}
                             </div>
-                             <div className="basis-[20%]">
+                             <div className="basis-[20%] md:text-2xl text-[10px]">
                               {coin.market_cap}
                             </div>
 
@@ -87,9 +99,9 @@ function CoinTable(){
                 
             </div>
 
-            <div className="flex gap-4 jusity-center items-center py-5 ">
-                <button disabled={page === 1} onClick={()=> setPage(page-1)} className="btn btn-primary btn-wide text-white text-2xl ">Prev</button>
-                <button onClick={()=> setPage(page+1)} className="btn btn-success btn-wide text-white text-2xl ">Next</button>
+            <div className=" w-full justify-center  flex gap-4  py-5 ">
+                <button disabled={page === 1} onClick={()=> setPage(page-1)} className="btn btn-primary md:btn-wide w-[120px] h-[50px]  text-white md:text-2xl text-sm ">Prev</button>
+                <button onClick={()=> setPage(page+1)} className="btn btn-success md:btn-wide w-[120px] h-[50px]  text-white md:text-2xl text-sm ">Next</button>
 
             </div>
 

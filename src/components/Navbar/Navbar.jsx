@@ -1,11 +1,19 @@
 import { useContext } from "react";
 import { CurrencyContext } from "../../Context/CurrencyContext";
+import currencyStore from '../../state/store'
+import { useNavigate } from "react-router";
 
 function Navbar(){
-  const { setCurrency }  = useContext(CurrencyContext);
+  const { setCurrency }  = currencyStore() ;
+  const navigate = useNavigate();
+
+  function goToHome(){
+    navigate('/');
+  }
+
     return(
         <>
-        <div className="navbar bg-neutral text-neutral-content shadow-sm">
+        <div className=" min-w-[300px] navbar bg-neutral text-neutral-content shadow-sm">
   <div className="navbar-start">
     <div className="dropdown">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -13,13 +21,13 @@ function Navbar(){
       </div>
       <ul
         tabIndex={0}
-        className="menu menu-sm dropdown-content bg-neutral rounded-box z-1 mt-3 w-52 p-2 shadow">
+        className="menu menu-sm dropdown-content bg-neutral rounded-box z-1 mt-3 md:w-52 w-24 p-2 shadow">
         <li onClick={()=> setCurrency('inr')}  ><a>INR</a></li>
         <li onClick={()=> setCurrency('usd')}><a>USD</a></li>
       </ul>
     </div>
   </div>
-  <div className="navbar-center">
+  <div onClick={goToHome} className="navbar-center">
     <a className=" text-xl">CRYPTO TRACKER</a>
   </div>
   <div className="navbar-end">

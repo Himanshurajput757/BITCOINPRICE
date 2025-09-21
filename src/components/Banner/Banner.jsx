@@ -3,7 +3,7 @@ import BannerImage from '../../assets/BannerImage.jpg'
 function Banner(){
     return(
         <>
-        <div className='w-full h-[25rem] relative '>
+        <div className='w-full h-[15rem] md:h-[25rem] relative '>
             <img src={BannerImage} alt="BannerImage"
             className='w-full h-full'
             />
