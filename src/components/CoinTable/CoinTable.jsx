@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { fetchCoinData } from "../../services/fecthCoinData";
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { CurrencyContext } from "../../Context/CurrencyContext";
 import currencyStore from '../../state/store'
 import { useNavigate } from 'react-router-dom';
@@ -11,11 +11,13 @@ function CoinTable(){
    const [page, setPage] = useState(1);
    const { currency }  = currencyStore() ;
 
-    const { data, isLoading, isError, error }   = useQuery(['coins', page, currency],() => fetchCoinData(page, currency), {
+    const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["coins", page, currency], // ✅ object syntax
+    queryFn: () => fetchCoinData(page, currency), // ✅ function reference
     // retry: 2,
     // retryDelay: 1000,
-    //cacheTime: 1000 * 60 * 2,
-   });
+    // gcTime: 1000 * 60 * 2, // ✅ v5 uses gcTime instead of cacheTime
+  });
    
 function handleCoinRedirect(id){
  

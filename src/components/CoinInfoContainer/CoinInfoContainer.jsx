@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import CoinInfo from '../CoinInfo/CoinInfo'
 import currencyStore from '../../state/store'
 import { useState } from 'react';
@@ -13,11 +13,12 @@ function CoinInfoContainer({coinId}){
     const [days, setDays] = useState(1);
     const [interval, setCoinInterval] = useState('');
 
-    const {data: historicData, isLoading, isError} = useQuery(['coinHistoricData', coinId , days, interval, currency],
-        () => fetchCoinHistoricData(coinId, '' , days,  currency), {
-            cacheTime: 1000 * 60 * 2,
-            staleTime: 1000 * 60 * 2,
-        });
+    const { data: historicData, isLoading, isError } = useQuery({
+    queryKey: ["coinHistoricData", coinId, days, interval, currency],
+    queryFn: () => fetchCoinHistoricData(coinId, "", days, currency),
+    cacheTime: 1000 * 60 * 2,
+    staleTime: 1000 * 60 * 2,
+  });
 
         if(isLoading){
             return <PageLoader />

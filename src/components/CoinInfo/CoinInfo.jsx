@@ -88,10 +88,10 @@ function CoinInfo({ historicData, setDays, days, setCoinInterval, currency }) {
 
 
       <div className="flex justify-center mt-5 w-full bg-transparent ">
-        <select className="select select-ghost mx-w-xs" onChange={handleDayChange} >
+        <select className="select select-ghost mx-w-xs" value={days} onChange={handleDayChange} >
                     {chartDays.map((day, index) => {
                         return(
-                            <option selected={days == day.value} key={index} value={day.value} >{day.label}</option>
+                            <option  key={index} value={day.value} >{day.label}</option>
                         )
                     })}
           

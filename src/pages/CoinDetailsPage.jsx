@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { use, useEffect } from "react";
 import { fetchCoinDetails } from '../services/fetchCoinDetails'
 import  parse from 'html-react-parser';
@@ -13,11 +13,12 @@ function CoinDetailsPage(){
     const { currency } = currencyStore();
     
 
-    const { isError, isLoading, data: coin }  = useQuery(['coin', coinId], ()=> fetchCoinDetails(coinId),{
-        cacheTime: 1000 * 60 * 2,
-        staleTime: 1000 * 60 * 2,
-    });
-
+    const { isError, isLoading, data: coin } = useQuery({
+    queryKey: ["coin", coinId, currency],       // add currency if coin data depends on it
+    queryFn: () => fetchCoinDetails(coinId),
+    cacheTime: 1000 * 60 * 2,
+    staleTime: 1000 * 60 * 2,
+  });
    
     if(isLoading){
         return <PageLoader />
