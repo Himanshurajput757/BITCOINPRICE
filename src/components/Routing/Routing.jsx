@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import MainLayout from '../../pages/Layout';
 import { lazy  } from 'react';
 import PageLoader from '../PageLoader/PageLoader';
-import CustomErrorBoundary from '../CustomErrorBoundary/CustomErrorboundary';
+import CustomErrorBoundary from '../CustomErrorBoundary/CustomErrorBoundary';
 
 const Home = lazy(()=> import('../../pages/Home'));
 const CoinDetailsPage = lazy(()=> import('../../pages/CoinDetailsPage'));
